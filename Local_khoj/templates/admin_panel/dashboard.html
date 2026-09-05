@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h3 class="mb-0">Admin Dashboard</h3>
+    <a href="/admin/" class="btn btn-outline-secondary btn-sm">Open Django Admin</a>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card p-3 shadow-sm border-0">
+        <div class="text-muted small fw-bold text-uppercase">Users</div>
+        <div class="h4 mb-1 fw-bold">{{ total_users }}</div>
+        <div class="small text-muted">Vendors: {{ vendors }} | Customers: {{ customers }}</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 shadow-sm border-0">
+        <div class="text-muted small fw-bold text-uppercase">Stores</div>
+        <div class="h4 mb-1 fw-bold">{{ stores_count }}</div>
+        <div class="small text-muted">Verified: {{ verified_stores }} | Active: {{ active_stores }}</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 shadow-sm border-0">
+        <div class="text-muted small fw-bold text-uppercase">Catalog</div>
+        <div class="h4 mb-1 fw-bold">{{ products_count }} Products</div>
+        <div class="small text-muted">{{ services_count }} Services</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 shadow-sm border-0">
+        <div class="text-muted small fw-bold text-uppercase">Orders</div>
+        <div class="h4 mb-1 fw-bold">{{ orders_count }}</div>
+        <div class="small text-muted text-success fw-semibold">Revenue: ₹ {{ revenue }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card p-4 shadow-sm border-0">
+        <h6 class="fw-bold mb-3"><i class="bi bi-pie-chart-fill me-2"></i>Orders By Status</h6>
+        <ul class="list-group list-group-flush">
+          {% for s in by_status %}
+          <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+            <span class="text-capitalize">{{ s.status }}</span>
+            <span class="badge bg-light text-dark">{{ s.c }}</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item bg-transparent px-0">No orders.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card p-4 mt-4 shadow-sm border-0">
+        <h6 class="fw-bold mb-3"><i class="bi bi-clock-history me-2"></i>Recent Orders</h6>
+        <ul class="list-group list-group-flush">
+          {% for o in recent_orders %}
+          <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+            <span>#{{ o.id }} <span class="badge bg-light text-dark text-capitalize ms-2">{{ o.status }}</span></span>
+            <span class="fw-semibold">₹ {{ o.total_amount }}</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item bg-transparent px-0">No orders.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card p-4 shadow-sm border-0">
+        <h6 class="fw-bold mb-3"><i class="bi bi-tag-fill me-2"></i>Pending Category Requests</h6>
+        <ul class="list-group list-group-flush">
+          {% for r in pending_categories %}
+          <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+            <span>{{ r.name }} <span class="small text-muted">by {{ r.vendor.username }}</span></span>
+            <span class="small text-muted">{{ r.created_at|date:"M d, Y" }}</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item bg-transparent px-0">No pending requests.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card p-4 mt-4 shadow-sm border-0">
+        <h6 class="fw-bold mb-3"><i class="bi bi-shop me-2"></i>Top Stores</h6>
+        <ul class="list-group list-group-flush">
+          {% for s in top_stores %}
+          <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+            <span>{{ s.name }}</span>
+            <span class="small text-muted">{{ s.rating }}★ • {{ s.total_reviews }} reviews</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item bg-transparent px-0">No stores yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

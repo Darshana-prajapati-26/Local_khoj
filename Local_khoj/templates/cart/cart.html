@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Your Cart</h2>
+
+    {% if cart.items.all %}
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart.items.all %}
+            <tr>
+                <td>
+                    {% if item.product %}
+                    {{ item.product.name }}
+                    {% else %}
+                    {{ item.service.name }}
+                    {% endif %}
+                </td>
+                <td>₹ {{ item.get_unit_price }}</td>
+                <td>
+                    <form method="post" action="{% url 'update_cart_item' item.id %}"
+                        class="d-inline-flex align-items-center gap-2">
+                        {% csrf_token %}
+                        <button name="action" value="minus" class="btn btn-sm btn-outline-secondary px-2">-</button>
+                        <span class="fw-bold">{{ item.quantity }}</span>
+                        <button name="action" value="plus" class="btn btn-sm btn-outline-secondary px-2">+</button>
+                    </form>
+                </td>
+                <td>₹ {{ item.get_total_price }}</td>
+                <td>
+                    <form method="post" action="{% url 'update_cart_item' item.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button name="action" value="remove" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i> Remove
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4 class="text-end">
+        Grand Total: ₹ {{ cart.get_total }}
+    </h4>
+
+    <div class="row mt-4">
+        <div class="col-md-6 offset-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Delivery Information</h5>
+                    <form method="post" action="{% url 'checkout' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" name="delivery_name" class="form-control" required
+                                placeholder="Receiver's name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="text" name="delivery_phone" class="form-control" required
+                                placeholder="Receiver's phone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Delivery Address / Service Location</label>
+                            <textarea name="delivery_address" class="form-control" rows="3" required
+                                placeholder="Full address for delivery or service location"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Coupon Code (Optional)</label>
+                            <input type="text" name="coupon" class="form-control" placeholder="Enter coupon">
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">Place Order (COD)</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <p>No items in cart.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

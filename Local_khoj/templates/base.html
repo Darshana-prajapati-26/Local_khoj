@@ -1,0 +1,654 @@
+{% load static core_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Local Khoj</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Varela+Round&family=Noto+Sans+Devanagari:wght@700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Style -->
+    <style>
+        :root {
+            --lk-primary: #324bc9;
+            --lk-secondary: #6a82fb;
+            --lk-accent: #ff9f43;
+            --lk-body-bg: #ffffff;
+            --lk-body-fg: #212529;
+            --lk-card-bg: #ffffff;
+            --lk-card-border: #e5e7eb;
+            --lk-surface-1: #f8f9fa;
+            --lk-dark-bg: #1a1c23;
+        }
+
+        .dark :root,
+        .dark {
+            --lk-body-bg: #0f0f10;
+            --lk-body-fg: #eaeaea;
+            --lk-card-bg: #16181a;
+            --lk-card-border: #2a2e33;
+            --lk-surface-1: #1b1f24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--lk-body-bg);
+            color: var(--lk-body-fg);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* --- STYLIZED LOGO --- */
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            text-decoration: none !important;
+            user-select: none;
+            padding: 5px 0;
+        }
+
+        .logo-main {
+            font-family: 'Varela Round', sans-serif;
+            font-weight: 700;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            letter-spacing: -1px;
+        }
+
+        .logo-l1 {
+            color: #00a8ff;
+        }
+
+        .logo-o-glass {
+            color: #333;
+            font-size: 1.8rem;
+            margin: 0 2px;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+            transition: color 0.3s;
+        }
+
+        .dark .logo-o-glass {
+            color: #f1f2f6;
+        }
+
+        .logo-l2 {
+            color: #0097e6;
+        }
+
+        .logo-l3 {
+            color: #44bd32;
+        }
+
+        .logo-l4 {
+            color: #4cd137;
+        }
+
+        .logo-hindi {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-top: -8px;
+            margin-left: 20px;
+            background: linear-gradient(90deg, #00a8ff 0%, #fbc531 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        /* -------------------- */
+
+        .navbar {
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 0;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .btn-post-business {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+        }
+
+        .btn-post-business:hover {
+            background-color: #e64a19;
+            color: white;
+        }
+
+        footer {
+            background: var(--lk-dark-bg);
+            color: white;
+        }
+
+        .card {
+            background: var(--lk-card-bg);
+            border: 1px solid var(--lk-card-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .navbar {
+            background-color: #000 !important;
+            border-bottom: 1px solid var(--lk-card-border) !important;
+        }
+
+        .dark .navbar .nav-link,
+        .dark .navbar .text-muted,
+        .dark .navbar .form-select {
+            color: var(--lk-body-fg) !important;
+        }
+
+        .dark .text-muted {
+            color: #adb5bd !important;
+        }
+
+        .dark .card {
+            background-color: var(--lk-card-bg);
+            border-color: var(--lk-card-border);
+        }
+
+        .dark .card h4,
+        .dark .card h5,
+        .dark .card h6,
+        .dark .card p,
+        .dark .card span {
+            color: var(--lk-body-fg);
+        }
+
+        .dark .kpi-card {
+            background-color: #1c1e22;
+        }
+
+        .dark .kpi-card .text-muted {
+            color: #94a3b8 !important;
+        }
+
+        .dark .kpi-card .h4 {
+            color: #f8fafc;
+        }
+
+        .dark .list-group-item {
+            background-color: var(--lk-card-bg);
+            color: var(--lk-body-fg);
+            border-color: var(--lk-card-border);
+        }
+
+        .dark hr {
+            background-color: var(--lk-card-border);
+            opacity: 0.5;
+        }
+
+        .dark .table {
+            color: var(--lk-body-fg);
+        }
+
+        .dark .table thead th {
+            border-bottom-color: var(--lk-card-border);
+        }
+
+        .dark .table td {
+            border-bottom-color: var(--lk-card-border);
+        }
+
+        .dark .badge.bg-light {
+            background-color: var(--lk-surface-1) !important;
+            color: var(--lk-body-fg) !important;
+        }
+
+        .dark .navbar .nav-link:hover {
+            color: white !important;
+        }
+
+        /* Hero styles */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 8px;
+            border-radius: 12px;
+            display: flex;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .dark .search-container {
+            background: var(--lk-card-bg);
+            border: 1px solid var(--lk-card-border);
+        }
+
+        .search-container input {
+            border: none;
+            padding: 12px 20px;
+            flex-grow: 1;
+            outline: none;
+            font-size: 1rem;
+            color: #333;
+            background: transparent;
+        }
+
+        .dark .search-container input {
+            color: white;
+        }
+
+        .search-container .btn-search {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Categories Section */
+        .cat-item {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+            display: block;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #eee;
+        }
+
+        .dark .cat-item {
+            background: var(--lk-card-bg);
+            color: var(--lk-body-fg);
+            border-color: var(--lk-card-border);
+        }
+
+        .cat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            color: var(--lk-primary);
+        }
+
+        .dark .cat-item:hover {
+            color: white;
+        }
+
+        .cat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Listing Cards */
+        .listing-card {
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .listing-card {
+            background: var(--lk-card-bg);
+            color: var(--lk-body-fg);
+        }
+
+        .dark .listing-card .card-title {
+            color: white;
+        }
+
+        .dark .listing-card .text-muted {
+            color: #aaa !important;
+        }
+
+        .listing-img {
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .listing-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .dark .listing-badge {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+
+        .rating-star {
+            color: #ffc107;
+            margin-right: 4px;
+        }
+
+        .btn-call {
+            background: #fff;
+            border: 1px solid #ddd;
+            color: #333;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+        }
+
+        .dark .btn-call {
+            background: var(--lk-surface-1);
+            border-color: var(--lk-card-border);
+            color: var(--lk-body-fg);
+        }
+
+        .btn-direction {
+            background: #324bc9;
+            color: #fff;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+        }
+
+        /* Popular Section in Dark Mode */
+        .dark .h2,
+        .dark h2,
+        .dark .h5,
+        .dark h5 {
+            color: white;
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background: #1a1c23;
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 60px 0;
+        }
+
+        @media (max-width: 768px) {
+            .cta-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <div class="logo-container">
+                    <div class="logo-main">
+                        <span class="logo-l1">L</span>
+                        <i class="bi bi-search logo-o-glass"></i>
+                        <span class="logo-l2">c</span>
+                        <span class="logo-l3">a</span>
+                        <span class="logo-l4">l</span>
+                    </div>
+                    <div class="logo-hindi">खोज</div>
+                </div>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <div class="d-flex align-items-center me-3 text-muted">
+                            <i class="bi bi-geo-alt-fill me-1"></i>
+                            <select class="form-select form-select-sm border-0 bg-transparent fw-semibold"
+                                style="width: auto;">
+                                {% for c in cities %}
+                                <option value="{{ c|slugify }}">{{ c }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </li>
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3 fw-medium position-relative" href="{% url 'cart_view' %}">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            {% get_cart_count user as count %}
+                            <span
+                                class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger"
+                                id="cartCount" {% if count == 0 %}style="display: none;" {% endif %}>
+                                {{ count }}
+                            </span>
+                        </a>
+                    </li>
+
+                    {% if user.is_staff or user.is_superuser or user.user_type == "admin" %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3 fw-medium text-danger" href="{% url 'admin_panel:dashboard' %}">Admin
+                            Panel</a>
+                    </li>
+                    {% endif %}
+
+                    {% if user.user_type == "vendor" %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3 fw-medium text-primary" href="{% url 'vendor:dashboard' %}">Vendor
+                            Dashboard</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link px-3 fw-medium" href="{% url 'dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3 fw-medium" href="{% url 'login' %}">Login / Signup</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="nav-item ms-lg-3">
+                        <a href="{% url 'stores:create_store' %}" class="btn btn-post-business">
+                            Post Business
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-3">
+                        <button id="themeToggle" class="btn btn-sm btn-link text-muted" title="Toggle theme">
+                            <i class="bi bi-circle-half fs-5"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <!-- PAGE CONTENT -->
+    {% block content %}
+    {% endblock %}
+
+
+    <!-- FOOTER -->
+    <footer class="mt-5 py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <h5 class="fw-bold mb-3">About Us</h5>
+                    <p class="text-white-50 small">
+                        Local Khoj is your one-stop destination to find and support local businesses in your city. From
+                        shops to services, we bring everything near you.
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="fw-bold mb-3">Contact Us</h5>
+                    <ul class="list-unstyled text-white-50 small">
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Ahmedabad, Gujarat, India</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> +91 7041692707</li>
+                        <li><i class="bi bi-envelope me-2"></i> support@localkhoj.com</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="fw-bold mb-3">Privacy Policy</h5>
+                    <ul class="list-unstyled text-white-50 small">
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Terms of Service</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 text-md-end">
+                    <h5 class="fw-bold mb-3">Follow Us</h5>
+                    <div class="d-flex justify-content-md-end gap-3">
+                        <a href="#" class="text-white fs-4"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="bi bi-whatsapp"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-5 border-secondary opacity-25">
+            <div class="text-center text-white-50 small">
+                © 2026 Local Khoj. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function applyTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            const btn = document.getElementById('themeToggle');
+            if (btn) btn.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTheme();
+            const btn = document.getElementById('themeToggle');
+            btn && btn.addEventListener('click', () => {
+                const theme = localStorage.getItem('theme') || 'light';
+                localStorage.setItem('theme', theme === 'dark' ? 'light' : 'dark');
+                applyTheme();
+            });
+        });
+    </script>
+    <script>
+        async function pollNotif() {
+            const r = await fetch("{% url 'api_notifications' %}");
+            const data = await r.json();
+            const badge = document.getElementById('notifBadge');
+            const menu = document.getElementById('notifMenu');
+            if (!badge || !menu) return;
+            badge.style.display = data.count > 0 ? 'inline' : 'none';
+            badge.textContent = data.count;
+            menu.innerHTML = '';
+            if (data.items && data.items.length) {
+                data.items.forEach(i => {
+                    const li = document.createElement('li');
+                    li.className = 'dropdown-item d-flex justify-content-between align-items-start';
+                    li.innerHTML = "<div><strong>" + i.title + "</strong><br><small class='text-muted'>" + (i.body || "") + "</small></div>" +
+                        "<button class='btn btn-sm btn-outline-danger ms-2' data-del='" + i.id + "'>Delete</button>";
+                    menu.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.className = 'dropdown-item text-muted';
+                li.textContent = 'No new notifications';
+                menu.appendChild(li);
+            }
+        }
+        function getCsrf() {
+            const m = document.cookie.match(/csrftoken=([^;]+)/);
+            return m ? m[1] : '';
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            pollNotif();
+            setInterval(pollNotif, 5000);
+            const menu = document.getElementById('notifMenu');
+            if (menu) {
+                menu.addEventListener('click', async (e) => {
+                    const btn = e.target.closest('button[data-del]');
+                    if (!btn) return;
+                    const id = btn.getAttribute('data-del');
+                    await fetch("{% url 'api_notification_delete' 0 %}".replace('0', id), {
+                        method: 'POST',
+                        headers: { 'X-CSRFToken': getCsrf() }
+                    });
+                    pollNotif();
+                });
+            }
+        });
+    </script>
+    <script>
+        // Voice search using Web Speech API
+        document.addEventListener('DOMContentLoaded', () => {
+            const voiceBtn = document.getElementById('voiceBtn');
+            const qInput = document.querySelector('form[action$="search"] input[name="q"]');
+            if (!voiceBtn || !qInput) return;
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SR) {
+                voiceBtn.style.display = 'none';
+                return;
+            }
+            const rec = new SR();
+            rec.lang = 'en-IN';
+            rec.continuous = false;
+            rec.interimResults = false;
+            voiceBtn.addEventListener('click', () => rec.start());
+            rec.onresult = (e) => {
+                const txt = Array.from(e.results).map(r => r[0].transcript).join(' ');
+                qInput.value = txt;
+            };
+        });
+    </script>
+
+</body>
+
+</html>

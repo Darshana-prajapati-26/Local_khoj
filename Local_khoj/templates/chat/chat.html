@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h4>Chat with {{ store.name }}</h4>
+  <div id="chatBox" class="border rounded p-3 mb-3" style="height:320px; overflow-y:auto;">
+    {% for m in messages %}
+    <div class="mb-2">
+      <strong>{{ m.sender.username }}:</strong> {{ m.content }}
+      {% if m.image %}<br><img src="{{ m.image.url }}" style="max-height:160px" class="mt-1">{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <form method="post" enctype="multipart/form-data" action="{% url 'chat_send' thread.id %}" class="d-flex gap-2">
+    {% csrf_token %}
+    <input type="text" name="content" class="form-control" placeholder="Type a message">
+    <input type="file" name="image" class="form-control">
+    <button class="btn btn-primary">Send</button>
+  </form>
+</div>
+<script>
+  const box = document.getElementById('chatBox');
+  box.scrollTop = box.scrollHeight;
+  let lastId = {{ last_id|default:0 }};
+  async function poll() {
+    const r = await fetch("{% url 'chat_poll' thread.id %}?last_id=" + lastId);
+    const data = await r.json();
+    if (data.messages && data.messages.length) {
+      data.messages.forEach(m => {
+        const d = document.createElement('div');
+        d.className = 'mb-2';
+        d.innerHTML = "<strong>" + m.sender + ":</strong> " + (m.content || "") + (m.image ? "<br><img src='" + m.image + "' style='max-height:160px' class='mt-1'>" : "");
+        box.appendChild(d);
+        lastId = m.id;
+      });
+      box.scrollTop = box.scrollHeight;
+    }
+  }
+  setInterval(poll, 3000);
+</script>
+{% endblock %}

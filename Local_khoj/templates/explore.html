@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load core_tags %}
+{% block content %}
+<style>
+  .hover-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .text-pink {
+    color: #e83e8c !important;
+  }
+</style>
+<div class="container py-5">
+  <h3 class="mb-3">Explore</h3>
+  <p class="text-muted">Browse categories and top places by city.</p>
+  <div class="row mb-5">
+    <div class="col-12">
+      <h5 class="mb-4">Browse by Category</h5>
+      <div class="row g-3">
+        {% for cat in categories %}
+        <div class="col-6 col-md-3">
+          <a href="{% url 'stores:store_list' %}?category={{ cat.slug }}"
+            class="card text-center p-3 text-decoration-none shadow-sm h-100 hover-card">
+            <div class="mb-2">
+              {% if cat.icon %}
+              <img src="{{ cat.icon.url }}" alt="{{ cat.name }}"
+                style="width: 40px; height: 40px; object-fit: contain;">
+              {% else %}
+              <i class="bi {{ cat.slug|category_icon }} {{ cat.slug|category_color }} fs-3"></i>
+              {% endif %}
+            </div>
+            <span class="fw-semibold text-dark">{{ cat.name }}</span>
+          </a>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">No categories found.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h5>Popular Cities</h5>
+      <ul class="list-group">
+        {% for c in cities|slice:":10" %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ c }}</span>
+          <a class="btn btn-sm btn-outline-primary" href="{% url 'stores:store_list' %}?city={{ c }}">View Stores</a>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No cities available.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h5>Quick Search</h5>
+      <form class="row g-2" method="get" action="{% url 'search' %}">
+        <div class="col-md-5">
+          <select class="form-select" name="city">
+            <option value="">All cities</option>
+            {% for c in cities %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-5">
+          <input class="form-control" type="text" name="q" placeholder="Salons, Plumber, Bakery" />
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100">Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h3 class="mb-0">Dashboard</h3>
+    <a href="{% url 'user:profile' %}" class="btn btn-outline-secondary btn-sm">Profile</a>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card p-3">
+        <div class="text-muted">Orders</div>
+        <div class="h4 mb-0">{{ orders|length }}</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3">
+        <div class="text-muted">Cart Items</div>
+        <div class="h4 mb-0">{% if cart %}{{ cart.items.count }}{% else %}0{% endif %}</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3">
+        <div class="text-muted">Favorites</div>
+        <div class="h4 mb-0">{{ favorites_count }}</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3">
+        <div class="text-muted">Wishlist</div>
+        <div class="h4 mb-0">{{ wishlist_count }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card p-3 mb-4">
+        <h6 class="mb-3">Recent Orders</h6>
+        <ul class="list-group list-group-flush">
+          {% for o in orders %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>#{{ o.id }} <span class="badge bg-light text-dark text-capitalize ms-2">{{ o.status }}</span></span>
+            <span>₹ {{ o.total_amount }}</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item">No orders yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="card p-3 mb-4">
+        <h6 class="mb-3">Recent Activity</h6>
+        <ul class="list-group list-group-flush">
+          {% for i in interactions %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span class="text-capitalize">{{ i.interaction_type }}</span>
+            <span class="small text-muted">{{ i.created_at }}</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item">No activity yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3 mb-4">
+        <h6 class="mb-3">Your Cart</h6>
+        {% if cart and cart.items.all %}
+        <ul class="list-group list-group-flush">
+          {% for it in cart.items.all %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{% firstof it.product.name it.service.name "-" %}</span>
+            <span>Qty {{ it.quantity }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="text-end mt-2">Total: ₹ {{ cart.get_total }}</div>
+        <div class="text-end mt-2">
+          <a href="{% url 'cart_view' %}" class="btn btn-sm btn-outline-primary">View Cart</a>
+          <a href="{% url 'checkout' %}" class="btn btn-sm btn-success">Checkout</a>
+        </div>
+        {% else %}
+        <div class="text-muted">Your cart is empty.</div>
+        {% endif %}
+      </div>
+
+      <div class="card p-3 mb-4">
+        <h6 class="mb-3">Recent Items</h6>
+        <ul class="list-group list-group-flush">
+          {% for it in recent_items %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{% firstof it.product.name it.service.name "-" %}</span>
+            <span class="small text-muted">Qty {{ it.quantity }}</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item">No recent items.</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="card p-3 mb-4">
+        <h6 class="mb-3">Recent Searches</h6>
+        <ul class="list-group list-group-flush">
+          {% for s in searches %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ s.query }}</span>
+            <span class="badge bg-light text-dark">{{ s.search_type }}</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item">No searches yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

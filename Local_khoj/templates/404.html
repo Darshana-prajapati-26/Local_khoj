@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5 text-center">
+  <h1 class="display-5">404</h1>
+  <p class="text-muted mb-4">The page you are looking for was not found.</p>
+  <a class="btn btn-primary" href="{% url 'home' %}">Go Home</a>
+  <a class="btn btn-outline-secondary ms-2" href="javascript:history.back()">Go Back</a>
+  </div>
+{% endblock %}

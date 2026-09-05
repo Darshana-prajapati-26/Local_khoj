@@ -1,0 +1,22 @@
+:root{
+  --primary:#0d6efd;
+  --muted:#6c757d;
+  --bg:#f8f9fa;
+  --card-bg:#ffffff;
+}
+body{background:var(--bg);font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+.hero-section{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff}
+.card{background:var(--card-bg)}
+.btn-primary{background:var(--primary);border-color:var(--primary)}
+.container{max-width:1150px}
+
+/* Responsive tweaks */
+@media (max-width:576px){
+  .hero-section{padding:2rem}
+}
+
+/* Simple utility */
+.text-muted{color:var(--muted)}
+
+.store-card img{height:160px;object-fit:cover}
+
